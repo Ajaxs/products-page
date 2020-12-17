@@ -1,28 +1,60 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="wrapper">
+      <div class="currency" :class="direction">1$ = {{ currency }} руб</div>
+      <Main />
+      <Cart />
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
+import { mapGetters } from 'vuex';
+import Main from './components/Main.vue';
+import Cart from './components/Cart.vue';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
+    Main,
+    Cart,
+  },
+  data() {
+    return {
+      direction: '',
+    };
+  },
+  computed: {
+    ...mapGetters([
+      'currency',
+    ]),
+  },
+  watch: {
+    currency(newVal, oldVal) {
+      this.direction = newVal > oldVal ? 'up' : 'down';
+    },
   },
 };
 </script>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style lang="scss" scoped>
+.wrapper {
+  width: 1260px;
+  margin: 0 auto;
+  padding-top: 20px;
+}
+
+.currency{
+  display: inline-block;
+  padding: 5px;
+  float: right;
+}
+
+.up {
+  background-color: rgb(28, 219, 108);
+}
+
+.down {
+  background-color: rgb(255, 149, 149);
 }
 </style>
